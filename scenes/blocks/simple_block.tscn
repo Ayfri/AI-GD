@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://b42fis31ggn6u"]
+
+[ext_resource type="PackedScene" uid="uid://eicp6qccfdo4" path="res://scenes/blocks/i_block.tscn" id="1_yfdkm"]
+[ext_resource type="Texture2D" uid="uid://cksqg00n4b4id" path="res://assets/sprites/cube.png" id="2_r4ur8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4bb2o"]
+atlas = ExtResource("2_r4ur8")
+region = Rect2(0, 0, 64, 64)
+
+[node name="SimpleBlock" instance=ExtResource("1_yfdkm")]
+
+[node name="Sprite" parent="." index="0"]
+texture = SubResource("AtlasTexture_4bb2o")
+
+[node name="HitBox" parent="." index="1"]
+position = Vector2(-1.90735e-06, 1.90735e-06)
+scale = Vector2(3.2, 3.2)
+polygon = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://eicp6qccfdo4"]
+
+[ext_resource type="Script" path="res://scripts/i_block.gd" id="1_d4pnd"]
+
+[node name="IBlock" type="StaticBody2D"]
+script = ExtResource("1_d4pnd")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+
+[node name="HitBox" type="CollisionPolygon2D" parent="."]

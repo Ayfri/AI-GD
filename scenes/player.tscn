@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=3 uid="uid://clb0dco13r2l3"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_46fnm"]
+[ext_resource type="Texture2D" uid="uid://br0dmnosa6igg" path="res://icon.svg" id="1_yd2wo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oeduj"]
+size = Vector2(64, 64)
+
+[sub_resource type="Animation" id="Animation_2xtkj"]
+resource_name = "jump"
+length = 0.6
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.35, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.9, 1.1), Vector2(1.05, 0.95), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_r3r60"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xw4q7"]
+_data = {
+"RESET": SubResource("Animation_r3r60"),
+"jump": SubResource("Animation_2xtkj")
+}
+
+[node name="Player" type="CharacterBody2D"]
+floor_stop_on_slope = false
+floor_max_angle = 0.0872665
+platform_on_leave = 2
+script = ExtResource("1_46fnm")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_yd2wo")
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_oeduj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xw4q7")
+}

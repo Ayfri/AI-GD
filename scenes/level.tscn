@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://f4lk1wskir4c"]
+
+[ext_resource type="PackedScene" uid="uid://clb0dco13r2l3" path="res://scenes/player.tscn" id="1_il471"]
+[ext_resource type="Script" path="res://scripts/level.gd" id="1_qofl0"]
+[ext_resource type="PackedScene" uid="uid://cg2crw76kmm1c" path="res://scenes/blocks/spike_block.tscn" id="4_ngaa7"]
+[ext_resource type="PackedScene" uid="uid://b42fis31ggn6u" path="res://scenes/blocks/simple_block.tscn" id="5_55me1"]
+[ext_resource type="PackedScene" uid="uid://dsweprfrvkddq" path="res://scenes/blocks/half_block.tscn" id="6_a8qit"]
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_036us"]
+resource_name = "blocks"
+scenes/1/scene = ExtResource("4_ngaa7")
+scenes/2/scene = ExtResource("5_55me1")
+scenes/3/scene = ExtResource("6_a8qit")
+
+[sub_resource type="TileSet" id="TileSet_ywj5l"]
+tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 1
+custom_data_layer_0/name = "kill"
+custom_data_layer_0/type = 1
+sources/1 = SubResource("TileSetScenesCollectionSource_036us")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6bf0n"]
+size = Vector2(1600, 450)
+
+[node name="Level" type="Node" node_paths=PackedStringArray("spawn_position")]
+script = ExtResource("1_qofl0")
+spawn_position = NodePath("SpawnPosition")
+
+[node name="Player" parent="." instance=ExtResource("1_il471")]
+position = Vector2(0, -32)
+
+[node name="Camera" type="Camera2D" parent="."]
+offset = Vector2(0, -150)
+
+[node name="TileMap" type="TileMap" parent="."]
+texture_filter = 1
+tile_set = SubResource("TileSet_ywj5l")
+cell_quadrant_size = 64
+collision_animatable = true
+format = 2
+layer_0/tile_data = PackedInt32Array(-65528, 1, 131072, -131060, 1, 131072, -65524, 1, 131072, -196592, 1, 131072, -131056, 1, 131072, -65520, 1, 131072, -65513, 1, 65536, -65512, 1, 65536, -65506, 1, 131072, -131042, 1, 131072, -262111, 1, 131072, -196575, 1, 131072, -131039, 1, 131072, -65503, 1, 131072, -262110, 1, 131072, -262109, 1, 131072, -262108, 1, 131072, -262107, 1, 131072, -262106, 1, 131072, -262105, 1, 131072, -262104, 1, 131072, -262103, 1, 131072, -262102, 1, 131072, -196566, 1, 131072, -131030, 1, 131072, -65494, 1, 131072, -327638, 1, 65536, -327642, 1, 65536, -131021, 1, 196608, -196557, 1, 65536)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(-800, 0)
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_right = 1600.0
+offset_bottom = 450.0
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Floor"]
+position = Vector2(800, 225)
+shape = SubResource("RectangleShape2D_6bf0n")
+
+[node name="SpawnPosition" type="Marker2D" parent="."]
+position = Vector2(-300, -32)
