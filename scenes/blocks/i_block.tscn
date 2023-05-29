@@ -9,3 +9,6 @@ script = ExtResource("1_d4pnd")
 texture_filter = 1
 
 [node name="HitBox" type="CollisionPolygon2D" parent="."]
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

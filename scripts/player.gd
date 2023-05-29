@@ -15,12 +15,10 @@ var level: Level
 
 
 func _physics_process(delta: float) -> void:
+	if level.paused: return
+
 	velocity.y += gravity * delta
 	move_and_slide()
-
-	# Check if player has a collision body to the right
-	#	if raycast_right.is_colliding():
-	#		die()
 
 	for idx in range(get_slide_collision_count()):
 		var collision_body := get_slide_collision(idx)
@@ -32,26 +30,6 @@ func _physics_process(delta: float) -> void:
 				die()
 
 			if absi(block.global_position.y - position.y) < 8:
-				die()
-
-		if collider is TileMap:
-			var tilemap := collider as TileMap
-			var tile_rid := collision_body.get_collider_rid()
-			var tile_coords := tilemap.get_coords_for_body_rid(tile_rid)
-
-			# check if tile_pos is below player position with a margin of error of 8 pixels
-			var tile_pos := tilemap.get_global_transform().basis_xform(tile_coords * tilemap.cell_quadrant_size) + tilemap.get_global_transform().origin
-			var position_y := position.y - (sprite.texture.get_height() / 2) * sprite.transform.get_scale().y
-			if absi(tile_pos.y - position_y) < 8:
-				die()
-			#			if tile_pos.x > position.x:
-			#				die()
-
-			# Check if player is on a kill tile
-			# TODO : Get tile layer from body rid when Godot 4.1 is released
-			var tile_data := tilemap.get_cell_tile_data(0, tile_coords)
-
-			if tile_data.get_custom_data_by_layer_id(0) == true:
 				die()
 
 	if is_on_floor():
