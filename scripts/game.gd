@@ -1,6 +1,8 @@
 extends Node
 
 
+const BLOCKS_ATLAS_PATH := preload("res://assets/sprites/atlas.png")
+
 @export var currently_opened_gui: Control = null:
 	set(value):
 		if currently_opened_gui != null:

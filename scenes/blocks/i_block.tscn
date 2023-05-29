@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/i_block.gd" id="1_d4pnd"]
 
-[node name="IBlock" type="StaticBody2D"]
+[node name="IBlock" type="StaticBody2D" groups=["block"]]
 script = ExtResource("1_d4pnd")
 
 [node name="Sprite" type="Sprite2D" parent="."]

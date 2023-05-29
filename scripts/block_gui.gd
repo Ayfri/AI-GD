@@ -2,10 +2,9 @@ class_name BlockGui
 extends Control
 
 
-var block: IBlock
-
 @onready var rotation_slider := %RotationSlider as HSlider
 
+@export var block: IBlock
 @export var hold_step_size := 45
 
 
