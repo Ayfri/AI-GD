@@ -11,6 +11,7 @@ const BLOCK_GUI_SCENE := preload("res://scenes/block_gui.tscn")
 @export var level: Level = null
 @export var texture: Texture2D:
 	get:
+		if sprite == null: return null
 		return sprite.texture
 	set(value):
 		texture = value
@@ -76,8 +77,5 @@ func save() -> Dictionary:
 
 
 func open_edit_gui() -> void:
-	var edit_gui := Game.open_gui(BLOCK_GUI_SCENE, global_position)
-	print("edit_gui: ", edit_gui)
-	print("edit_gui2: ", edit_gui as BlockGui)
-	var edit_gui2 := edit_gui as BlockGui
-	edit_gui2.block = self
+	var edit_gui := Game.open_gui(BLOCK_GUI_SCENE, global_position) as BlockGui
+	edit_gui.block = self

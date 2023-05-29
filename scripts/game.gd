@@ -8,6 +8,7 @@ const BLOCKS_ATLAS_PATH := preload("res://assets/sprites/atlas.png")
 		if currently_opened_gui != null:
 			currently_opened_gui.queue_free()
 		currently_opened_gui = value
+@export var editor: Editor = null
 @export var level: Level = null
 
 

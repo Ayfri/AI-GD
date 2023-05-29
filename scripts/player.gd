@@ -15,7 +15,7 @@ var level: Level
 
 
 func _physics_process(delta: float) -> void:
-	if level.paused: return
+	if level.paused || dead: return
 
 	velocity.y += gravity * delta
 	move_and_slide()
@@ -28,9 +28,11 @@ func _physics_process(delta: float) -> void:
 			var block := collider as IBlock
 			if block.kills_player:
 				die()
+				return
 
 			if absi(block.global_position.y - position.y) < 8:
 				die()
+				return
 
 	if is_on_floor():
 		snap_rotation_to_floor()
@@ -43,7 +45,6 @@ func _physics_process(delta: float) -> void:
 func die() -> void:
 	if dead: return
 	dead = true
-	print("Player died")
 	sprite.hide()
 	animation_player.stop()
 	await get_tree().create_timer(death_timeout).timeout
@@ -57,11 +58,9 @@ func jump() -> void:
 
 
 func respawn() -> void:
-	dead = false
-	velocity = Vector2.ZERO
-	sprite.rotation_degrees = 0
-	sprite.show()
 	level.reset_to_spawn_position()
+	sprite.show()
+	dead = false
 
 
 func rotate_sprite(delta: float) -> void:

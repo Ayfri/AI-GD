@@ -7,7 +7,7 @@
 atlas = ExtResource("2_jkipi")
 region = Rect2(128, 0, 64, 64)
 
-[node name="SimpleBlock" instance=ExtResource("1_70fd6")]
+[node name="SpikeBlock" instance=ExtResource("1_70fd6")]
 kills_player = true
 
 [node name="Sprite" parent="." index="0"]

@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://f20gnbf35l6j"]
+
+[ext_resource type="Texture2D" uid="uid://cksqg00n4b4id" path="res://assets/sprites/atlas.png" id="1_d0xo8"]
+[ext_resource type="Script" path="res://scripts/block_button.gd" id="1_o1qv2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nngyi"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgjte"]
+atlas = ExtResource("1_d0xo8")
+region = Rect2(0, 0, 0, 64)
+
+[node name="BlockButton" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_o1qv2")
+region_rect = Rect2(0, 0, 0, 1)
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+offset_right = 94.0
+offset_bottom = 94.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_nngyi")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer"]
+texture_filter = 1
+layout_mode = 2
+texture = SubResource("AtlasTexture_cgjte")
+
+[connection signal="gui_input" from="PanelContainer" to="." method="_on_panel_container_gui_input"]
