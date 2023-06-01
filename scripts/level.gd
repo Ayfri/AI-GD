@@ -77,10 +77,15 @@ func _set_paused(value: bool) -> void:
 
 
 func _world_position_to_map_position(world_position: Vector2) -> Vector2:
-	var new_position := Vector2(world_position)
-	new_position.x -= tilemap.position.x
-	new_position -= _mouse_offset
-	return new_position
+	return tilemap.to_local(world_position) - _mouse_offset
+
+
+func disable_tilemap_collisions() -> void:
+	tilemap.collision_animatable = false
+
+
+func enable_tilemap_collisions() -> void:
+	tilemap.collision_animatable = true
 
 
 func get_block_at_mouse() -> IBlock:
@@ -179,7 +184,9 @@ func set_block_at_mouse(block_instance: IBlock, snap_to_grid := true) -> void:
 
 func set_block(position: Vector2, block_instance: IBlock, snap_to_grid := true) -> void:
 	var old_block := get_block(position)
-	if old_block != null && old_block.get_class() != block_instance.get_class(): remove_block(position)
+	if old_block != null:
+		if old_block.get_class() != block_instance.get_class(): remove_block(position)
+		else: return
 
 	if snap_to_grid: position = position.snapped(tilemap.tile_set.tile_size)
 

@@ -18,7 +18,7 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_cgjte"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_p2x8m"]
 atlas = ExtResource("1_d0xo8")
 region = Rect2(0, 0, 0, 64)
 
@@ -39,6 +39,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_nngyi")
 [node name="TextureRect" type="TextureRect" parent="PanelContainer"]
 texture_filter = 1
 layout_mode = 2
-texture = SubResource("AtlasTexture_cgjte")
+texture = SubResource("AtlasTexture_p2x8m")
 
 [connection signal="gui_input" from="PanelContainer" to="." method="_on_panel_container_gui_input"]

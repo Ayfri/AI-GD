@@ -47,6 +47,7 @@ func die() -> void:
 	dead = true
 	sprite.hide()
 	animation_player.stop()
+	level.disable_tilemap_collisions()
 	await get_tree().create_timer(death_timeout).timeout
 	respawn()
 
@@ -59,6 +60,8 @@ func jump() -> void:
 
 func respawn() -> void:
 	level.reset_to_spawn_position()
+	level.enable_tilemap_collisions()
+	move_and_slide()
 	sprite.show()
 	dead = false
 
