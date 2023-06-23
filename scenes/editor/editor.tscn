@@ -15,6 +15,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ejxk0")
+mode = null
+
+[node name="ModeLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_right = 213.0
+offset_bottom = 81.0
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 clip_contents = true

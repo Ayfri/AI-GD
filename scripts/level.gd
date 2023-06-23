@@ -41,9 +41,9 @@ func _physics_process(_delta: float) -> void:
 	if edit_ray_cast.is_colliding() && paused && Input.is_action_just_pressed("Click"):
 		var collider := edit_ray_cast.get_collider()
 
-		if collider is IBlock:
+		if collider is IBlock && editor_gui.mode == Editor.Mode.EDIT:
 			var block := collider as IBlock
-#			block.open_edit_gui()
+			block.open_edit_gui()
 
 
 func _input(event: InputEvent) -> void:

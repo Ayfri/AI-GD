@@ -23,8 +23,11 @@ size = Vector2(1600, 450)
 
 [node name="Level" type="Node" node_paths=PackedStringArray("spawn_position")]
 script = ExtResource("1_qofl0")
+paused = null
 save_file_path = "user://save.json"
 spawn_position = NodePath("SpawnPosition")
+speed = null
+time_scale = null
 
 [node name="Player" parent="." instance=ExtResource("1_il471")]
 position = Vector2(0, -32)
@@ -69,3 +72,4 @@ offset_left = -800.0
 offset_top = -600.0
 offset_right = -800.0
 offset_bottom = -600.0
+mode = null
