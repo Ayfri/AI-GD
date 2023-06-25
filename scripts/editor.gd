@@ -18,7 +18,9 @@ var level: Level
 			remove_child(preview_block)
 			preview_block = null
 
-@export var mode := Mode.PLACE
+@export var mode := Mode.PLACE:
+	set = _set_mode
+
 @export var preview_block: IBlock = null
 
 @onready var mode_label := $ModeLabel as RichTextLabel
@@ -41,11 +43,8 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Toggle Editor Mode"):
 		if mode == Mode.PLACE:
 			mode = Mode.EDIT
-			mode_label.text = "Edit"
 		else:
-			Game.currently_opened_gui = null;
 			mode = Mode.PLACE
-			mode_label.text = "Place"
 
 
 func _on_gui_input(event: InputEvent):
@@ -54,3 +53,14 @@ func _on_gui_input(event: InputEvent):
 		block_pos = block_pos + level.tilemap.position
 		if preview_block != null:
 			preview_block.position = block_pos
+
+
+func _set_mode(new_mode: Mode) -> void:
+	mode = new_mode
+	if mode == Mode.EDIT:
+		mode_label.text = "Edit"
+		preview_block.hide()
+	else:
+		Game.currently_opened_gui = null;
+		mode_label.text = "Place"
+		preview_block.show()
