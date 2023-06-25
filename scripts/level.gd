@@ -1,8 +1,8 @@
 class_name Level
 extends Node
 
-var _mouse_offset := Vector2(-10, 32)
-var _old_mouse_position := Vector2.ZERO
+
+const MOUSE_OFFSET := Vector2(0, 32)
 
 @onready var camera := $Camera as Camera2D
 @onready var editor_gui := $Editor as Editor
@@ -32,12 +32,13 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	floor_body.global_position.x = camera.global_position.x - get_viewport().get_visible_rect().size.x / 2
+	floor_body.global_position.x = camera.global_position.x
 
 	if !player.dead:
 		tilemap.position.x -= speed * _delta * time_scale
 
-	edit_ray_cast.position = camera.get_global_mouse_position()
+	edit_ray_cast.position = get_mouse_position()
+	place_ray_cast.position = get_map_position_at_mouse()
 	if edit_ray_cast.is_colliding() && paused && Input.is_action_just_pressed("Click"):
 		var collider := edit_ray_cast.get_collider()
 
@@ -61,12 +62,6 @@ func _input(event: InputEvent) -> void:
 		reset_to_spawn_position()
 
 
-func _mouse_pos_as_map_pos() -> Vector2:
-	var mouse_pos := _world_position_to_map_position(camera.get_global_mouse_position())
-	_old_mouse_position = mouse_pos
-	return mouse_pos
-
-
 func _set_paused(value: bool) -> void:
 	paused = value
 	editor_gui.visible = value
@@ -74,10 +69,6 @@ func _set_paused(value: bool) -> void:
 	time_scale = 0.0 if value else 1.0
 	if !value:
 		Game.currently_opened_gui = null
-
-
-func _world_position_to_map_position(world_position: Vector2) -> Vector2:
-	return tilemap.to_local(world_position) - _mouse_offset
 
 
 func disable_tilemap_collisions() -> void:
@@ -89,12 +80,20 @@ func enable_tilemap_collisions() -> void:
 
 
 func get_block_at_mouse() -> IBlock:
-	return get_block(_mouse_pos_as_map_pos())
+	return get_block(get_map_position_at_mouse())
+
+
+func get_map_position_at_mouse(snap_to_grid := false) -> Vector2:
+	return world_position_to_map_position(get_mouse_position(), snap_to_grid)
+
+
+func get_mouse_position() -> Vector2:
+	return editor_gui.get_local_mouse_position()
 
 
 func get_block(position: Vector2) -> IBlock:
-	place_ray_cast.target_position = place_ray_cast.position - position - _mouse_offset
-	place_ray_cast.position = position + _mouse_offset
+	place_ray_cast.target_position = place_ray_cast.position - position
+	place_ray_cast.position = position
 	place_ray_cast.force_raycast_update()
 
 	if place_ray_cast.is_colliding():
@@ -139,7 +138,7 @@ func load_level() -> void:
 
 
 func remove_block_at_mouse() -> void:
-	remove_block(_mouse_pos_as_map_pos())
+	remove_block(get_map_position_at_mouse())
 
 
 func remove_block(position: Vector2) -> void:
@@ -179,17 +178,19 @@ func save() -> void:
 
 
 func set_block_at_mouse(block_instance: IBlock, snap_to_grid := true) -> void:
-	set_block(_mouse_pos_as_map_pos(), block_instance, snap_to_grid)
+	set_block(get_map_position_at_mouse(snap_to_grid), block_instance)
 
 
-func set_block(position: Vector2, block_instance: IBlock, snap_to_grid := true) -> void:
+func set_block(position: Vector2, block_instance: IBlock) -> void:
 	var old_block := get_block(position)
 	if old_block != null:
 		if old_block.get_class() != block_instance.get_class(): remove_block(position)
 		else: return
 
-	if snap_to_grid: position = position.snapped(tilemap.tile_set.tile_size)
-
 	tilemap.add_child(block_instance)
 	block_instance.position = position
-	block_instance.position += _mouse_offset
+
+
+func world_position_to_map_position(world_position: Vector2, snap_to_grid := false) -> Vector2:
+	var position := world_position - tilemap.position
+	return (position + MOUSE_OFFSET).snapped(tilemap.tile_set.tile_size) - MOUSE_OFFSET if snap_to_grid else position
