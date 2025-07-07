@@ -32,7 +32,13 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Click"):
+	var is_shift_held := Input.is_key_pressed(KEY_SHIFT)
+
+	if is_shift_held && Input.is_action_pressed("Click"):
+		if current_block != null && mode == Mode.PLACE:
+			var block := current_block.instantiate() as IBlock
+			level.set_block_at_mouse(block, true)
+	elif Input.is_action_just_pressed("Click"):
 		if current_block != null && mode == Mode.PLACE:
 			var block := current_block.instantiate() as IBlock
 			level.set_block_at_mouse(block, true)
