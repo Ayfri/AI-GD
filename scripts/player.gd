@@ -36,7 +36,7 @@ func _physics_process(delta: float) -> void:
 
 	if is_on_floor():
 		snap_rotation_to_floor()
-		if Input.is_action_pressed("jump"):
+		if Input.is_action_pressed("jump") and !level.is_click_on_ui():
 			jump()
 	else:
 		rotate_sprite(delta)

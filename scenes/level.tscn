@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://f4lk1wskir4c"]
+[gd_scene load_steps=11 format=3 uid="uid://f4lk1wskir4c"]
 
 [ext_resource type="PackedScene" uid="uid://clb0dco13r2l3" path="res://scenes/player.tscn" id="1_il471"]
 [ext_resource type="Script" uid="uid://mowleduv7q2f" path="res://scripts/level.gd" id="1_qofl0"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b42fis31ggn6u" path="res://scenes/blocks/simple_block.tscn" id="5_55me1"]
 [ext_resource type="PackedScene" uid="uid://dsweprfrvkddq" path="res://scenes/blocks/half_block.tscn" id="6_a8qit"]
 [ext_resource type="PackedScene" uid="uid://ccj7kl3c01hgn" path="res://scenes/editor/editor.tscn" id="6_io1qd"]
+[ext_resource type="PackedScene" path="res://scenes/game_hud.tscn" id="7_hud"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_036us"]
 resource_name = "blocks"
@@ -57,7 +58,7 @@ position = Vector2(800, 225)
 shape = SubResource("RectangleShape2D_6bf0n")
 
 [node name="SpawnPosition" type="Marker2D" parent="."]
-position = Vector2(500, 544)
+position = Vector2(800, 544)
 
 [node name="EditRayCast" type="RayCast2D" parent="."]
 target_position = Vector2(0, 0)
@@ -65,3 +66,5 @@ hit_from_inside = true
 collide_with_areas = true
 
 [node name="Editor" parent="." instance=ExtResource("6_io1qd")]
+
+[node name="GameHUD" parent="." instance=ExtResource("7_hud")]

@@ -3,17 +3,27 @@ extends Node
 
 
 const MOUSE_OFFSET := Vector2(0, 32)
+const PAUSE_MENU_SCENE := preload("res://scenes/pause_menu.tscn")
 
 @onready var camera := $Camera as Camera2D
 @onready var editor_gui := $Editor as Editor
 @onready var edit_ray_cast := $EditRayCast as RayCast2D
 @onready var floor_body := $Floor as StaticBody2D
+@onready var game_hud := $GameHUD as GameHUD
 @onready var place_ray_cast := $TileMap/PlaceRayCast as RayCast2D
 @onready var player := $Player as Player
 @onready var tilemap := $TileMap as TileMap
 
+@export var editor_active := false:
+	set = _set_editor_active
 @export var paused := false:
 	set = _set_paused
+
+var pause_menu: PauseMenu = null
+var ui_consuming_input := false
+var initial_spawn_position: Vector2
+var initial_tilemap_position: Vector2
+var initial_camera_position: Vector2
 
 @export_file var save_file_path := "user://save.level"
 @export var spawn_position: Marker2D
@@ -23,8 +33,12 @@ const MOUSE_OFFSET := Vector2(0, 32)
 
 func _ready() -> void:
 	spawn_position = $SpawnPosition as Marker2D
+	initial_spawn_position = spawn_position.position
+	initial_tilemap_position = tilemap.position
+	initial_camera_position = camera.position
 	Game.level = self
 	editor_gui.level = self
+	game_hud.level = self
 	player.level = self
 	paused = false
 	reset_to_spawn_position()
@@ -34,12 +48,12 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	floor_body.global_position.x = camera.global_position.x
 
-	if !player.dead:
+	if !player.dead and !paused:
 		tilemap.position.x -= speed * _delta * time_scale
 
 	edit_ray_cast.position = get_mouse_position()
 	place_ray_cast.position = get_map_position_at_mouse()
-	if edit_ray_cast.is_colliding() && paused && Input.is_action_just_pressed("Click"):
+	if edit_ray_cast.is_colliding() && editor_active && Input.is_action_just_pressed("Click"):
 		var collider := edit_ray_cast.get_collider()
 
 		if collider is IBlock && editor_gui.mode == Editor.Mode.EDIT:
@@ -48,8 +62,11 @@ func _physics_process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Escape"):
-		paused = !paused
+	if event.is_action_pressed("Toggle Pause Menu"):
+		toggle_pause_menu()
+
+	if event.is_action_pressed("Toggle Editor"):
+		editor_active = !editor_active
 
 	if event.is_action_pressed("Save Level"):
 		save()
@@ -62,13 +79,55 @@ func _input(event: InputEvent) -> void:
 		reset_to_spawn_position()
 
 
-func _set_paused(value: bool) -> void:
-	paused = value
+func _set_editor_active(value: bool) -> void:
+	editor_active = value
 	editor_gui.visible = value
 	editor_gui.set_process(value)
-	time_scale = 0.0 if value else 1.0
-	if !value:
+	game_hud.visible = !value
+	if value:
+		paused = true
+		time_scale = 0.0
+	else:
+		if pause_menu == null:
+			paused = false
+			time_scale = 1.0
 		Game.currently_opened_gui = null
+
+
+func _set_paused(value: bool) -> void:
+	paused = value
+	if !editor_active:
+		time_scale = 0.0 if value else 1.0
+
+
+func toggle_pause_menu() -> void:
+	if pause_menu == null:
+		_show_pause_menu()
+	else:
+		_hide_pause_menu()
+
+
+func _show_pause_menu() -> void:
+	pause_menu = PAUSE_MENU_SCENE.instantiate() as PauseMenu
+	pause_menu.level = self
+	pause_menu.resume_game.connect(_hide_pause_menu)
+	pause_menu.restart_game.connect(_restart_game)
+	add_child(pause_menu)
+	paused = true
+
+
+func _hide_pause_menu() -> void:
+	if pause_menu != null:
+		pause_menu.queue_free()
+		pause_menu = null
+		if !editor_active:
+			paused = false
+
+
+func _restart_game() -> void:
+	_hide_pause_menu()
+	# Recharger complètement la scène
+	get_tree().reload_current_scene()
 
 
 func disable_tilemap_collisions() -> void:
@@ -150,9 +209,12 @@ func remove_block(position: Vector2) -> void:
 func reset_to_spawn_position() -> void:
 	player.sprite.rotation = 0
 	player.velocity = Vector2.ZERO
-	tilemap.position = Vector2.ZERO
+	tilemap.position = initial_tilemap_position
 	player.position.y = spawn_position.position.y
 	player.position.x = spawn_position.position.x
+	player.dead = false
+	player.sprite.show()
+	enable_tilemap_collisions()
 
 
 func save() -> void:
@@ -199,3 +261,17 @@ func world_position_to_map_position(world_position: Vector2, snap_to_grid := fal
 		return (position / tile_size).floor() * tile_size + half_tile
 	else:
 		return position
+
+
+func is_click_on_ui() -> bool:
+	var mouse_pos = get_viewport().get_mouse_position()
+
+	# Vérifier si la souris est sur le bouton de pause
+	if game_hud.visible:
+		var pause_button = game_hud.pause_button
+		var button_rect = Rect2(pause_button.global_position, pause_button.size)
+		if button_rect.has_point(mouse_pos):
+			return true
+
+	# Vérifier si un menu est ouvert
+	return pause_menu != null or editor_active
