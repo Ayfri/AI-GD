@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://eicp6qccfdo4"]
 
-[ext_resource type="Script" path="res://scripts/i_block.gd" id="1_d4pnd"]
+[ext_resource type="Script" uid="uid://w66xk7fp3unq" path="res://scripts/i_block.gd" id="1_d4pnd"]
 
 [node name="IBlock" type="StaticBody2D" groups=["block"]]
 script = ExtResource("1_d4pnd")

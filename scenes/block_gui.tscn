@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d31033rs1x3oc"]
 
-[ext_resource type="Script" path="res://scripts/block_gui.gd" id="1_f1arf"]
+[ext_resource type="Script" uid="uid://boiuu0soo00vt" path="res://scripts/block_gui.gd" id="1_f1arf"]
 
 [node name="BlockGUI" type="Control"]
 layout_mode = 3

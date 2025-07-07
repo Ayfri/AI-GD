@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://f20gnbf35l6j"]
 
 [ext_resource type="Texture2D" uid="uid://cksqg00n4b4id" path="res://assets/sprites/atlas.png" id="1_d0xo8"]
-[ext_resource type="Script" path="res://scripts/block_button.gd" id="1_o1qv2"]
+[ext_resource type="Script" uid="uid://dan3s8luqerej" path="res://scripts/block_button.gd" id="1_o1qv2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nngyi"]
 content_margin_left = 15.0
