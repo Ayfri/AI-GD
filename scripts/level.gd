@@ -43,6 +43,8 @@ func _ready() -> void:
 	paused = false
 	reset_to_spawn_position()
 	load_level()
+	# Corriger l'état initial de l'éditeur
+	editor_active = editor_active
 
 
 func _physics_process(_delta: float) -> void:

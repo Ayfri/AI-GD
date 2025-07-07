@@ -57,7 +57,8 @@ func _on_gui_input(event: InputEvent):
 	if event is InputEventMouseMotion:
 		var block_pos := level.get_map_position_at_mouse(true)
 		if preview_block != null:
-			preview_block.position = block_pos
+			# Corriger la position de la preview en tenant compte du mouvement de la tilemap
+			preview_block.position = block_pos + level.tilemap.position
 
 
 func _set_mode(new_mode: Mode) -> void:
