@@ -68,7 +68,9 @@ func _input(event: InputEvent) -> void:
 		toggle_pause_menu()
 
 	if event.is_action_pressed("Toggle Editor"):
-		editor_active = !editor_active
+		# Ne pas pouvoir activer l'éditeur si le menu pause est ouvert
+		if pause_menu == null:
+			editor_active = !editor_active
 
 	if event.is_action_pressed("Save Level"):
 		save()
@@ -87,6 +89,9 @@ func _set_editor_active(value: bool) -> void:
 	editor_gui.set_process(value)
 	game_hud.visible = !value
 	if value:
+		# Fermer le menu pause si l'éditeur est activé
+		if pause_menu != null:
+			_hide_pause_menu()
 		paused = true
 		time_scale = 0.0
 	else:

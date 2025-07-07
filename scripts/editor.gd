@@ -32,6 +32,10 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	# Ne pas traiter les inputs si le menu pause est ouvert
+	if level.pause_menu != null:
+		return
+
 	var is_shift_held := Input.is_key_pressed(KEY_SHIFT)
 
 	if is_shift_held && Input.is_action_pressed("Click"):
@@ -54,6 +58,10 @@ func _process(_delta: float) -> void:
 
 
 func _on_gui_input(event: InputEvent):
+	# Ne pas traiter les inputs si le menu pause est ouvert
+	if level.pause_menu != null:
+		return
+
 	if event is InputEventMouseMotion:
 		var block_pos := level.get_map_position_at_mouse(true)
 		if preview_block != null:
