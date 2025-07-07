@@ -112,6 +112,8 @@ func _show_pause_menu() -> void:
 	pause_menu.level = self
 	pause_menu.resume_game.connect(_hide_pause_menu)
 	pause_menu.restart_game.connect(_restart_game)
+	pause_menu.save_level.connect(_on_save_level)
+	pause_menu.load_level.connect(_on_load_level)
 	add_child(pause_menu)
 	paused = true
 
@@ -128,6 +130,15 @@ func _restart_game() -> void:
 	_hide_pause_menu()
 	# Recharger complètement la scène
 	get_tree().reload_current_scene()
+
+
+func _on_save_level() -> void:
+	save()
+
+
+func _on_load_level() -> void:
+	load_level()
+	reset_to_spawn_position()
 
 
 func disable_tilemap_collisions() -> void:

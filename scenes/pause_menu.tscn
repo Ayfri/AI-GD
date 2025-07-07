@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bpause123456"]
+[gd_scene load_steps=7 format=3 uid="uid://bpause123456"]
 
 [ext_resource type="Script" path="res://scripts/pause_menu.gd" id="1_pause"]
 [ext_resource type="Texture2D" path="res://assets/icons/play_icon.svg" id="2_play"]
 [ext_resource type="Texture2D" path="res://assets/icons/restart_icon.svg" id="3_restart"]
+[ext_resource type="Texture2D" path="res://assets/icons/save_icon.svg" id="4_save"]
+[ext_resource type="Texture2D" path="res://assets/icons/load_icon.svg" id="5_load"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 bg_color = Color(0.1, 0.1, 0.1, 0.9)
@@ -82,6 +84,37 @@ text = "  Resume"
 icon = ExtResource("2_play")
 flat = true
 icon_alignment = 0
+
+[node name="SaveButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(300, 80)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.8, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.6, 0.6, 0.9, 1)
+theme_override_font_sizes/font_size = 28
+text = "  Save Level"
+icon = ExtResource("4_save")
+flat = true
+icon_alignment = 0
+
+[node name="LoadButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(300, 80)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.8, 1)
+theme_override_colors/font_pressed_color = Color(0.9, 0.9, 0.6, 1)
+theme_override_font_sizes/font_size = 28
+text = "  Load Level"
+icon = ExtResource("5_load")
+flat = true
+icon_alignment = 0
+
+[node name="SaveDateLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ButtonsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 18
+text = ""
+horizontal_alignment = 1
 
 [node name="RestartButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ButtonsContainer"]
 custom_minimum_size = Vector2(300, 80)
