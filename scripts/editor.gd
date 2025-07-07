@@ -32,7 +32,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if Input.is_action_pressed("Click"):
+	if Input.is_action_just_pressed("Click"):
 		if current_block != null && mode == Mode.PLACE:
 			var block := current_block.instantiate() as IBlock
 			level.set_block_at_mouse(block, true)
@@ -50,7 +50,6 @@ func _process(_delta: float) -> void:
 func _on_gui_input(event: InputEvent):
 	if event is InputEventMouseMotion:
 		var block_pos := level.get_map_position_at_mouse(true)
-		block_pos = block_pos + level.tilemap.position
 		if preview_block != null:
 			preview_block.position = block_pos
 

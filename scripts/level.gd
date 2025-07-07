@@ -193,4 +193,9 @@ func set_block(position: Vector2, block_instance: IBlock) -> void:
 
 func world_position_to_map_position(world_position: Vector2, snap_to_grid := false) -> Vector2:
 	var position := world_position - tilemap.position
-	return (position + MOUSE_OFFSET).snapped(tilemap.tile_set.tile_size) - MOUSE_OFFSET if snap_to_grid else position
+	if snap_to_grid:
+		var tile_size := Vector2(tilemap.tile_set.tile_size)
+		var half_tile := tile_size / 2
+		return (position / tile_size).floor() * tile_size + half_tile
+	else:
+		return position
